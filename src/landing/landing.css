@@ -9,7 +9,6 @@
   padding:  0 1vw;
   display: flex;
   flex-direction: row;
-  background-color: violet;
 }
 
 .nav-bar  {
@@ -17,7 +16,7 @@
   margin: 2vh 0;
   width: 12vw;
   height: 80vh;
-  background-color: turquoise;
+  border-right: 1px solid black;
 }
 
 .nav-bar-menu {
@@ -29,7 +28,6 @@
 .menu-list  {
   margin-left: 14vw;
   width: 100%;
-  background-color: tomato;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -44,9 +42,16 @@
   margin: 8px ;
   font-size: 14px;
   justify-content: space-evenly;
-  background-color: turquoise;
   text-align: center;
   border-radius: 25%;
+}
+
+.not-available  {
+  background-color: red;
+}
+
+.available  {
+  background-color: green;
 }
 
 .footer {
@@ -62,12 +67,4 @@
 .button {
   padding: 2vh 4vw;
   background-color: yellow;
-}
-
-.not-available  {
-  background-color: red;
-}
-
-.available  {
-  background-color: green;
 }

@@ -4,6 +4,7 @@ import './landing.css';
 class Landing extends React.Component {
 
   listOfShops = []
+  selectedNav
 
   constructor(props) {
     super(props)
@@ -21,10 +22,11 @@ class Landing extends React.Component {
     if (this.listOfShops.length)  {
       this.selectShop(this.listOfShops[0])
     }
+    this.selectedNav  = 0
   }
 
-  selectShop(data)  {
-    
+  selectShop(data, index)  {
+    this.selectedNav  = index
     this.setState({
       shopItemArr  :  this.props.data.menuDetails[data]
     })
@@ -87,7 +89,11 @@ class Landing extends React.Component {
         {/* side navbar */}
           <div className="nav-bar">
             {
-              this.listOfShops.map(data => <div onClick={() => this.selectShop(data)} key={data} className="nav-bar-menu"> {data} </div> )
+              this.listOfShops.map((data, index) => 
+                <div onClick={() => this.selectShop(data, index)} key={data} 
+                                                                  className={this.selectedNav === index ? "nav-bar-menu button" 
+                                                                                                         : "nav-bar-menu"}> {data} </div> 
+                )
             }
           </div>
           
@@ -103,8 +109,8 @@ class Landing extends React.Component {
         </div>
 
         <footer className="footer">
-          <button className="button"> ALL UNAVAILABLE</button>
-          <button className="button"> ALL AVAILABLE</button>
+          <button className="button"> ALL UNAVAILABLE </button>
+          <button className="button"> ALL AVAILABLE   </button>
         </footer>
        
       </div>
