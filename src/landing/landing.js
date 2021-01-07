@@ -3,36 +3,45 @@ import './landing.css';
 
 class Landing extends React.Component {
 
-  listOfShops = []
-  selectedNav
-
   constructor(props) {
     super(props)
 
     this.state  = {
-      shopItemArr : []
-    }
-    
-    for(let pr in this.props.data.menuDetails)  {
-      this.listOfShops.push(pr)
+      allShopDtl    : this.props.data.allShopInfo.menuDetails,
+      shopList      : this.props.data.shopsList,
+      selectedShop  : 0, 
+      selShopList   : [],
+      searchFac     : ''
     }
   }
 
   componentDidMount() {
-    if (this.listOfShops.length)  {
-      this.selectShop(this.listOfShops[0])
-    }
-    this.selectedNav  = 0
-  }
-
-  selectShop(data, index)  {
-    this.selectedNav  = index
     this.setState({
-      shopItemArr  :  this.props.data.menuDetails[data]
+      ...this.state,
+      selShopList   : this.state.allShopDtl[this.state.shopList[0]]
+    },()  =>  {
+      console.log(this.state)
     })
   }
 
+  onSelectShop(index)  {
+    this.setState({
+      ...this.state,
+      selectedShop  : index,
+      selShopList   : this.state.allShopDtl[this.state.shopList[index]]
+    },()  =>  {
+      console.log(this.state)
+    })
+  }
 
+  onSelectItem(index)  {
+    let tmp = this.state.allShopDtl
+    tmp[this.state.shopList[this.state.selectedShop]][index].ofs = !tmp[this.state.shopList[this.state.selectedShop]][index].ofs
+    this.setState({
+      ...this.state,
+      allShopDtl  : tmp
+    })
+  }
 
   isRange(startTime, endTime, currTime)  {
 
@@ -72,7 +81,34 @@ class Landing extends React.Component {
     return false
   }
 
+  unAvail() {
+    let tmp = this.state.allShopDtl
+    tmp[this.state.shopList[this.state.selectedShop]].forEach((val, index) => {
+      tmp[this.state.shopList[this.state.selectedShop]][index].ofs = true
+    })
+    this.setState({
+      ...this.state,
+      allShopDtl  : tmp
+    })
+  }
 
+  avail() {
+    let tmp = this.state.allShopDtl
+    tmp[this.state.shopList[this.state.selectedShop]].forEach((val, index) => {
+      tmp[this.state.shopList[this.state.selectedShop]][index].ofs = false
+    })
+    this.setState({
+      ...this.state,
+      allShopDtl  : tmp
+    })
+  }
+
+  search(event) {
+    this.setState({
+      ...this.state,
+      searchFac : event.target.value
+    })
+  }
 
   render()  {
 
@@ -80,7 +116,7 @@ class Landing extends React.Component {
       <div className="App">
         {/* header */}
         <div  className="header">
-
+          <input type="text" className="search" placeholder="search"  onKeyUp={(event) => this.search(event)}/>
         </div>
 
         {/* body */}
@@ -89,19 +125,20 @@ class Landing extends React.Component {
         {/* side navbar */}
           <div className="nav-bar">
             {
-              this.listOfShops.map((data, index) => 
-                <div onClick={() => this.selectShop(data, index)} key={data} 
-                                                                  className={this.selectedNav === index ? "nav-bar-menu selected-nav" 
-                                                                                                         : "nav-bar-menu"}> {data} </div> 
+              this.state.shopList.map((data, index) => 
+                <div onClick={() => this.onSelectShop(index)} 
+                     key={data} 
+                     className={this.state.selectedShop === index ? "nav-bar-menu selected-nav" 
+                                                                  : "nav-bar-menu"}> {data} </div> 
                 )
             }
           </div>
           
           <div className="menu-list">
             {
-              this.state.shopItemArr.map(data => data.ofs || !this.IsItemAvailable(data.servingtime) 
-                                                            ? <div className="menu-item-box not-available"> {data.foodname} </div>             
-                                                            : <div className="menu-item-box available"> {data.foodname} </div>  
+              this.state.selShopList.map((data, index) => data.ofs || !this.IsItemAvailable(data.servingtime) 
+                                    ? data.foodname.toLowerCase().search(this.state.searchFac.toLowerCase()) > -1 ? <div key={data.foodid} onClick={() => this.onSelectItem(index)} className="menu-item-box not-available"> {data.foodname} </div>  : ''            
+                                    : data.foodname.toLowerCase().search(this.state.searchFac.toLowerCase()) > -1 ? <div key={data.foodid} onClick={() => this.onSelectItem(index)} className="menu-item-box available"> {data.foodname} </div>  : ''
               )
             }
           </div>
@@ -109,15 +146,13 @@ class Landing extends React.Component {
         </div>
 
         <footer className="footer">
-          <div className="button"> ALL UNAVAILABLE </div>
-          <div className="button"> ALL AVAILABLE   </div>
+          <div onClick={() => this.unAvail()} className="button"> ALL UNAVAILABLE </div>
+          <div onClick={() => this.avail()} className="button"> ALL AVAILABLE   </div>
         </footer>
        
       </div>
     )
-
   }
- 
 }
 
 export default Landing;

@@ -3,7 +3,7 @@ import './App.css';
 import Landing from './landing/landing';
 
 function App() {
-  const val  =  {
+  const shopDetails  =  {
     "menuDetails": {
       "EATORAMA": [
         {
@@ -242,8 +242,18 @@ function App() {
     }
   }
 
+  let shopsList = []
+  for (let data in shopDetails.menuDetails) {
+    shopsList.push(data)
+  }
+
+  const shopInfo  = {
+    allShopInfo : shopDetails,
+    shopsList   : shopsList
+  }
+
   return (
-    <Landing data={val} className="struct" />
+    <Landing data={shopInfo} className="struct" />
   );
 }
 
