@@ -23,6 +23,10 @@
   padding: 1vh 8px;
 }
 
+.selected-nav {
+  background-color: yellow;
+}
+
 /* menu list */
 
 .menu-list  {

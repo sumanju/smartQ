@@ -91,7 +91,7 @@ class Landing extends React.Component {
             {
               this.listOfShops.map((data, index) => 
                 <div onClick={() => this.selectShop(data, index)} key={data} 
-                                                                  className={this.selectedNav === index ? "nav-bar-menu button" 
+                                                                  className={this.selectedNav === index ? "nav-bar-menu selected-nav" 
                                                                                                          : "nav-bar-menu"}> {data} </div> 
                 )
             }
@@ -109,8 +109,8 @@ class Landing extends React.Component {
         </div>
 
         <footer className="footer">
-          <button className="button"> ALL UNAVAILABLE </button>
-          <button className="button"> ALL AVAILABLE   </button>
+          <div className="button"> ALL UNAVAILABLE </div>
+          <div className="button"> ALL AVAILABLE   </div>
         </footer>
        
       </div>
